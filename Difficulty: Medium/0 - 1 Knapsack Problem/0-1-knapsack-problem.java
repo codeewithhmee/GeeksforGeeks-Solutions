@@ -2,21 +2,24 @@ class Solution {
     public int knapsack(int W, int val[], int wt[]) {
         // code here
         int[][] dp=new int[val.length][1001];
-        return helper(0,val,wt,W,dp);
+        //base case
+        for(int i=0;i<val.length;i++){
+            dp[i][0]=0;
+        }
+        //another base case
+        for(int i=0;i<1001;i++){
+            if(i>=wt[wt.length-1])dp[wt.length-1][i]=val[val.length-1];
+        }
+        //now we move upward
+        for(int row=val.length-2;row>=0;row--){
+            for(int remainingWt=1;remainingWt<1001;remainingWt++){
+                int pick=(wt[row]<=remainingWt)?val[row]+dp[row+1][remainingWt-wt[row]]:;
+                int notpick=dp[row+1][remainingWt];
+                dp[row][remainingWt]=Math.max(pick,notpick);
+            }
+        }
+        return dp[0][W];
         
     }
-    public int helper(int idx,int[] val,int[] wt,int w,int[][] dp){
-        if(idx>=wt.length || w<=0){
-            return 0;
-        }
-        if(dp[idx][w]!=0)return dp[idx][w];
-        int a=0;
-        if(wt[idx]<=w){
-             a=val[idx]+helper(idx+1,val,wt,w-wt[idx],dp);
-        }
-        
-        int b=helper(idx+1,val,wt,w,dp);
-        dp[idx][w]= Math.max(a,b);
-        return Math.max(a,b);
-    }
+ 
 }
