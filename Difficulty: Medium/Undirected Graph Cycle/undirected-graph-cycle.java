@@ -1,4 +1,5 @@
 class Solution {
+    boolean  isCycle=false;
     public boolean isCycle(int V, int[][] edges) {
         // Code here
          ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
@@ -10,34 +11,27 @@ class Solution {
             adj.get(e[1]).add(e[0]);
         }
         boolean[] vis = new boolean[V];
-
-        for (int i = 0; i < V; i++) {
+        
+          for (int i = 0; i < V; i++) {
             if (!vis[i]) {
-                if (bfs(i, adj, vis)) return true;
+                helper(adj, i, -1, vis);
             }
         }
-        return false;
+       
+        return isCycle;
+
     }
-       private boolean bfs(int src, ArrayList<ArrayList<Integer>> adj, boolean[] vis) {
-        Queue<int[]> q = new LinkedList<>();
-        q.add(new int[]{src, -1});
-        vis[src] = true;
-
-        while (!q.isEmpty()) {
-            int[] cur = q.poll();
-            int node = cur[0];
-            int parent = cur[1];
-
-            for (int nei : adj.get(node)) {
-                if (!vis[nei]) {
-                    vis[nei] = true;
-                    q.add(new int[]{nei, node});
-                } 
-                else if (nei != parent) {
-                    return true;
-                }
+    public  void helper( ArrayList<ArrayList<Integer>> adj ,int current,int source,boolean[] vis){
+        
+        vis[current]=true;
+        for(int n:adj.get(current)){
+            if(vis[n]){
+                if(source!=n) isCycle=true;
+                continue;
             }
+            helper(adj,n,current,vis);
         }
-        return false;
+        
     }
+       
 }
