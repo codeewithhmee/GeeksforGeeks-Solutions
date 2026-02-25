@@ -1,13 +1,14 @@
 class Solution {
     int maxSubarraySum(int[] arr) {
         // Code here
-        int sum=0;
-        int ans=-99999;
-        for(int i=0;i<arr.length;i++){
-            sum+=arr[i];
+        int ans=-9999999;
+        int sum=-9999999;
+        for(int n:arr){
+            sum+=n;
+            if(sum<n){
+                sum=n;
+            }
             ans=Math.max(ans,sum);
-            if(sum<0)sum=0;
-            
         }
         return ans;
     }
